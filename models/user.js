@@ -28,6 +28,16 @@ userSchema.pre('save', function(next){
     });
 });
 
+//adding methods to model
+userSchema.methods.comparePassword = function(candidatePassword, callback){
+    bcrypt.compare(candidatePassword, this.password, function(err, isMatch){
+        if(err){ return callback(err); }
+        else{
+            callback(null, isMatch);
+        }
+    })// this = reference to usermodel
+}
+
 // Create the model class
 const ModelClass = mongoose.model('user', userSchema);
 
